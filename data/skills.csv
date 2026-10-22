@@ -1,0 +1,443 @@
+skill,category
+3D Modeling,Programming
+A/B Testing,Web Development
+API Design,Backend
+APIs,Database
+ATS,AI/ML
+AWS,Data Science
+Academic Writing,Cloud
+Accounting,DevOps
+Accounts Payable,Cybersecurity
+Accounts Receivable,Networking
+Active Directory,Design
+Administrative Support,Business
+Adobe Illustrator,Finance
+Adobe Photoshop,Marketing
+Adobe Premiere Pro,Management
+After Effects,Healthcare
+Agile,Engineering
+Agricultural Technology,Education
+Agriculture,Legal
+Air Conditioning,Hospitality
+Airflow,Research
+Algorithms,Agriculture
+Altium Designer,Skilled Trade
+Analytics,Soft Skills
+Apache Spark,General
+Arc Welding,Programming
+Architectural Design,Web Development
+Architecture,Backend
+Assessment,Database
+Audio Editing,AI/ML
+Auditing,Data Science
+Authentication,Cloud
+AutoCAD,DevOps
+AutoCAD Electrical,Cybersecurity
+Automation,Networking
+Automotive Repair,Design
+Azure,Business
+BERT,Finance
+BI,Marketing
+Backup,Management
+Bash,Healthcare
+Blueprint Reading,Engineering
+Bookkeeping,Education
+Brake Systems,Legal
+Brand Management,Hospitality
+Branding,Research
+Budgeting,Agriculture
+Building Codes,Skilled Trade
+Building Information Modeling,Soft Skills
+Burp Suite,General
+Business Analysis,Programming
+Business Development,Web Development
+Business Management,Backend
+Business Process Modeling,Database
+Business Strategy,AI/ML
+C,Data Science
+C++,Cloud
+CAD,DevOps
+CI/CD,Cybersecurity
+CMake,Networking
+CNN,Design
+CRM,Business
+CSS,Finance
+Calendar Management,Marketing
+Candidate Screening,Management
+Canva,Healthcare
+Cargo,Engineering
+Case Analysis,Education
+Circuit Design,Legal
+Circuit Testing,Hospitality
+Cisco,Research
+Civil Engineering,Agriculture
+Classroom Management,Skilled Trade
+Cloud Architecture,Soft Skills
+Cloud Security,General
+Coaching,Programming
+Color Grading,Web Development
+Color Theory,Backend
+Communication,Database
+Community Management,AI/ML
+Compliance,Data Science
+Computer Vision,Cloud
+Concrete Technology,DevOps
+Concurrency,Cybersecurity
+Confidentiality,Networking
+Conflict Resolution,Design
+Construction Management,Business
+Content Marketing,Finance
+Content Strategy,Marketing
+Contract Law,Management
+Contract Management,Healthcare
+Control Systems,Engineering
+Copywriting,Education
+Corporate Governance,Legal
+Corporate Law,Hospitality
+Cost Analysis,Research
+Cost Control,Agriculture
+Cost Optimization,Skilled Trade
+Creativity,Soft Skills
+Crop Science,General
+Cryptography,Programming
+Culinary Arts,Web Development
+Curriculum Development,Backend
+Customer Relationship Management,Database
+Customer Service,AI/ML
+Cyber Security,Data Science
+DAX,Cloud
+DNS,DevOps
+DaVinci Resolve,Cybersecurity
+Data Analysis,Networking
+Data Architecture,Design
+Data Cleaning,Business
+Data Governance,Finance
+Data Modeling,Marketing
+Data Quality,Management
+Data Structures,Healthcare
+Data Visualization,Engineering
+Data Warehousing,Education
+Database Administration,Legal
+Databases,Hospitality
+Debugging,Research
+Deep Learning,Agriculture
+Demand Forecasting,Skilled Trade
+Design Systems,Soft Skills
+Design Thinking,General
+Digital Marketing,Programming
+Digital Media,Web Development
+Django,Backend
+Docker,Database
+Documentation,AI/ML
+Drainage Systems,Data Science
+Due Diligence,Cloud
+ERP,DevOps
+ETL,Cybersecurity
+Editing,Networking
+Educational Technology,Design
+Electrical Engineering,Business
+Electrical Safety,Finance
+Electrical Systems,Marketing
+Electrical Wiring,Management
+Electronics,Healthcare
+Email Marketing,Engineering
+Embedded Systems,Education
+Employee Relations,Legal
+Employer Branding,Hospitality
+Engine Repair,Research
+Engineering Drawing,Agriculture
+Ethical Hacking,Skilled Trade
+Evaluation,Soft Skills
+Event Management,General
+Excel,Programming
+Experiment Design,Web Development
+Experimental Design,Backend
+Facebook Ads,Database
+Facilitation,AI/ML
+Fact Checking,Data Science
+FastAPI,Cloud
+Feature Engineering,DevOps
+Figma,Cybersecurity
+Financial Analysis,Networking
+Financial Markets,Design
+Financial Modeling,Business
+Financial Reporting,Finance
+Fine-tuning,Marketing
+Firewalls,Management
+Flask,Healthcare
+Food Preparation,Engineering
+Food Safety,Education
+Forecasting,Legal
+GDB,Hospitality
+GIS,Research
+GPU Computing,Agriculture
+Generative AI,Skilled Trade
+Git,Soft Skills
+Go,General
+Google Ads,Programming
+Google Analytics,Web Development
+Google Cloud,Backend
+Google Search Console,Database
+Grafana,AI/ML
+Graphic Design,Data Science
+Grinding,Cloud
+HR Analytics,DevOps
+HR Policies,Cybersecurity
+HRIS,Networking
+HTML,Design
+HVAC,Business
+Hadoop,Finance
+Heating Systems,Marketing
+Hive,Management
+Hospitality,Healthcare
+Hotel Management,Engineering
+Human Resources,Education
+Hygiene,Legal
+IAM,Hospitality
+Illustration,Research
+Image Processing,Agriculture
+Incident Management,Skilled Trade
+Incident Response,Soft Skills
+Information Architecture,General
+Inspection,Programming
+Instagram,Web Development
+Installation,Backend
+Interaction Design,Database
+Internal Controls,AI/ML
+Interviewing,Data Science
+Inventory Management,Cloud
+Investigative Research,DevOps
+Investment Analysis,Cybersecurity
+JUnit,Networking
+Java,Design
+JavaScript,Business
+Jenkins,Finance
+Jira,Marketing
+Journalism,Management
+KPI Management,Healthcare
+Kafka,Engineering
+Kali Linux,Education
+Kanban,Legal
+Keyword Research,Hospitality
+Kitchen Management,Research
+Kubernetes,Agriculture
+LLM,Skilled Trade
+Labor Law,Soft Skills
+LangChain,General
+Law,Programming
+Layout Design,Web Development
+Lead Generation,Backend
+Leadership,Database
+Legal Ethics,AI/ML
+Legal Research,Data Science
+Legal Writing,Cloud
+Lesson Planning,DevOps
+Linear Algebra,Cybersecurity
+Link Building,Networking
+LinkedIn,Design
+LinkedIn Recruiter,Business
+Linux,Finance
+Literature Review,Marketing
+Litigation,Management
+Log Analysis,Healthcare
+Logistics,Engineering
+MATLAB,Education
+MIG Welding,Legal
+MLOps,Hospitality
+MLflow,Research
+Machine Learning,Agriculture
+Maintenance,Skilled Trade
+Makefile,Soft Skills
+Malware Analysis,General
+Manufacturing,Programming
+Market Research,Web Development
+Marketing,Backend
+Materials Science,Database
+Maven,AI/ML
+Mechanical Engineering,Data Science
+Memory Management,Cloud
+Mentoring,DevOps
+Menu Planning,Cybersecurity
+Mergers and Acquisitions,Networking
+Metal Fabrication,Design
+Metasploit,Business
+Microcontrollers,Finance
+Microservices,Marketing
+Microsoft Office,Management
+Model Deployment,Healthcare
+Model Evaluation,Engineering
+Monitoring,Education
+Motion Graphics,Legal
+Multithreading,Hospitality
+MySQL,Research
+NLP,Agriculture
+Negotiation,Skilled Trade
+Network Monitoring,Soft Skills
+Networking,General
+News Writing,Programming
+Node.js,Web Development
+NumPy,Backend
+OBD Diagnostics,Database
+OOP,AI/ML
+OWASP,Data Science
+Object Detection,Cloud
+Onboarding,DevOps
+OpenCV,Cybersecurity
+Operations Analysis,Networking
+Operations Management,Design
+Optimization,Business
+Oracle,Finance
+Organization,Marketing
+PCB Design,Management
+PLC,Healthcare
+Pandas,Engineering
+Payroll,Education
+Penetration Testing,Legal
+Performance Management,Hospitality
+Performance Tuning,Research
+Pipe Fitting,Agriculture
+Plant Biology,Skilled Trade
+Plumbing,Soft Skills
+Pointers,General
+Portfolio Management,Programming
+PostgreSQL,Web Development
+Power BI,Backend
+Power Query,Database
+Power Systems,AI/ML
+Power Tools,Data Science
+PowerPoint,Cloud
+PowerShell,DevOps
+Presentation,Cybersecurity
+Print Design,Networking
+Problem Solving,Design
+Process Improvement,Business
+Procurement,Finance
+Product Management,Marketing
+Product Strategy,Management
+Project Management,Healthcare
+Project Planning,Engineering
+Prometheus,Education
+Prompt Engineering,Legal
+Prospecting,Hospitality
+Prototyping,Research
+Purchase Management,Agriculture
+PyTorch,Skilled Trade
+Pytest,Soft Skills
+Python,General
+Quality Control,Programming
+Quantity Surveying,Web Development
+RAG,Backend
+REST API,Database
+RNN,AI/ML
+ROS,Data Science
+React,Cloud
+Recruitment,DevOps
+Redis,Cybersecurity
+Refrigeration,Networking
+Relationship Management,Design
+Rendering,Business
+Replication,Finance
+Reporting,Marketing
+Requirements Analysis,Management
+Research,Healthcare
+Research Methods,Engineering
+Responsive Design,Education
+Retrospectives,Legal
+Revenue Management,Hospitality
+Revit,Research
+Risk Analysis,Agriculture
+Risk Assessment,Skilled Trade
+Risk Management,Soft Skills
+Roadmapping,General
+Robotics,Programming
+Routing,Web Development
+Rust,Backend
+SEM,Database
+SEO,AI/ML
+SIEM,Data Science
+SQL,Cloud
+STL,DevOps
+Safety Procedures,Cybersecurity
+Sales,Networking
+Sales Management,Design
+Sales Strategy,Business
+Scala,Finance
+Scheduling,Marketing
+Scientific Writing,Management
+Scikit-learn,Healthcare
+Scrum,Engineering
+Security,Education
+Security Architecture,Legal
+Security Monitoring,Hospitality
+Sensors,Research
+SketchUp,Agriculture
+Snowflake,Skilled Trade
+Social Media Marketing,Soft Skills
+Software Development,General
+Soil Science,Programming
+SolidWorks,Web Development
+Sound Design,Backend
+Sourcing,Database
+Spring Boot,AI/ML
+Sprint Planning,Data Science
+Stakeholder Management,Cloud
+Statistics,DevOps
+Storytelling,Cybersecurity
+Structural Analysis,Networking
+Student Counseling,Design
+Subject Knowledge,Business
+Supply Chain,Finance
+Surveying,Marketing
+Sustainability,Management
+Switching,Healthcare
+System Design,Engineering
+Systems Programming,Education
+TCP/IP,Legal
+TIG Welding,Hospitality
+Talent Acquisition,Research
+Tally,Agriculture
+Taxation,Skilled Trade
+Teaching,Soft Skills
+Team Leadership,General
+Teamwork,Programming
+Technical SEO,Web Development
+Technical Writing,Backend
+TensorFlow,Database
+Terraform,AI/ML
+Testing,Data Science
+Text Classification,Cloud
+Thermodynamics,DevOps
+Threat Detection,Cybersecurity
+Threat Modeling,Networking
+Tokenization,Design
+Transformers,Business
+Transmission,Finance
+Travel Management,Marketing
+Troubleshooting,Management
+TypeScript,Healthcare
+Typography,Engineering
+UI Design,Education
+UX Design,Legal
+Usability Testing,Hospitality
+User Research,Research
+User Testing,Agriculture
+VPN,Skilled Trade
+Valuation,Soft Skills
+Vector Databases,General
+Vehicle Diagnostics,Programming
+Vendor Management,Web Development
+Video Editing,Backend
+Virtualization,Database
+Vulnerability Assessment,AI/ML
+Vulnerability Management,Data Science
+Water Systems,Cloud
+Web Accessibility,DevOps
+Web Security,Cybersecurity
+WebAssembly,Networking
+Welding,Design
+Windows Server,Business
+Wireframing,Finance
+WordPress,Marketing
+Zero Trust,Management
+dbt,Healthcare
+gRPC,Engineering
