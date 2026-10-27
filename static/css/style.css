@@ -1,0 +1,905 @@
+/* =========================================================
+   SkillGap AI: bright green + brown theme
+   Spacing system: 8pt grid, floating header + floating nav,
+   multi-page layout (Home / Results / extra page)
+   ========================================================= */
+:root {
+  --surface: #fbf6ec;
+  --white: #ffffff;
+  --ink: #3b2a1c;
+  --ink-soft: #6b5640;
+  --line: #dccdac;
+  --outline: #9a8468;
+
+  --green: #2a7d4f;
+  --green-mid: #3a9a62;
+  --green-light: #a6e0b8;
+  --green-tint: #e6f5eb;
+  --green-line: #bfe3cc;
+  --green-ink: #14582f;
+  --olive: #6b9a3a;
+
+  --brown: #8b5a2b;
+  --brown-light: #a8723d;
+  --tan: #ecd2ad;
+
+  --rust: #b3402a;
+  --rust-tint: #fdf0ea;
+  --rust-line: #f0cfc2;
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* ---------- Spacing scale (8pt grid) ---------- */
+  --space-1: 0.25rem;  /*  4 */
+  --space-2: 0.5rem;   /*  8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+
+  /* ---------- Layout ---------- */
+  --page-gutter: var(--space-4);      /* side padding on mobile */
+  --content-max: 40rem;               /* readable column width */
+  --float-gap: var(--space-3);        /* gap between floating bars and screen edge */
+  --header-h: 4rem;
+  --nav-h: 4rem;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* ---------- Radius + elevation ---------- */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 9999px;
+  --shadow-float: 0 8px 28px rgba(107, 78, 48, 0.16), 0 2px 6px rgba(107, 78, 48, 0.08);
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(900px 480px at 100% -8%, rgba(166, 224, 184, 0.38), transparent 62%),
+    radial-gradient(760px 480px at -10% 22%, rgba(236, 210, 173, 0.5), transparent 62%);
+  background-repeat: no-repeat;
+  color: var(--ink);
+  line-height: 1.6;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, h4, p, ul, ol { margin: 0; }
+h1, h2, h3, h4 { line-height: 1.25; }
+
+::-webkit-scrollbar { display: none; }
+html { scrollbar-width: none; scroll-behavior: smooth; }
+
+.pt-safe { padding-top: var(--safe-top); }
+.pb-safe { padding-bottom: var(--safe-bottom); }
+
+/* =========================================================
+   PAGE LAYOUT
+   Floating bars sit above the content, so main reserves their
+   height plus the gap on each side.
+   ========================================================= */
+.app-main {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+  padding-top: calc(var(--safe-top) + var(--float-gap) + var(--header-h) + var(--space-5));
+  padding-bottom: calc(var(--safe-bottom) + var(--float-gap) + var(--nav-h) + var(--space-5));
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Pages: only one is visible at a time (toggle [hidden] or .is-active in script) */
+.page { display: none; }
+.page.is-active,
+.page:not([hidden]):only-child { display: block; }
+.page[hidden] { display: none; }
+.page.is-active { animation: page-in 0.45s var(--ease) both; }
+
+/* Vertical rhythm helpers */
+.stack     > * + * { margin-top: var(--space-4); }
+.stack-sm  > * + * { margin-top: var(--space-2); }
+.stack-lg  > * + * { margin-top: var(--space-6); }
+
+.section        { padding-block: var(--space-5); }
+.section + .section { padding-top: 0; }
+
+.page-header { margin-bottom: var(--space-5); }
+.page-header .page-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.page-header .page-subtitle {
+  margin-top: var(--space-2);
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  max-width: 34rem;
+}
+
+/* Standard surface card */
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+.card-compact { padding: var(--space-4); }
+
+/* Rows inside the extra page (settings / history / saved items) */
+.list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s ease, border-color 0.25s;
+}
+.list-row + .list-row { margin-top: var(--space-3); }
+.list-row:hover { border-color: var(--green-line); box-shadow: 0 6px 16px rgba(107, 78, 48, 0.1); }
+.list-row-title { font-family: "Plus Jakarta Sans", sans-serif; font-weight: 600; font-size: 0.9375rem; }
+.list-row-meta  { margin-top: var(--space-1); color: var(--ink-soft); font-size: 0.8125rem; }
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: "FILL" 0, "wght" 400;
+  transition: transform 0.25s var(--ease), font-variation-settings 0.25s;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   FLOATING HEADER  (.app-header)
+   ========================================================= */
+.app-header {
+  position: fixed;
+  top: calc(var(--safe-top) + var(--float-gap));
+  left: var(--float-gap);
+  right: var(--float-gap);
+  z-index: 50;
+  height: var(--header-h);
+  max-width: calc(var(--content-max) - var(--space-2));
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  background-color: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid rgba(220, 205, 172, 0.7);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, transform 0.3s var(--ease);
+}
+.app-header.is-scrolled {
+  background-color: rgba(251, 246, 236, 0.94);
+  box-shadow: 0 12px 32px rgba(107, 78, 48, 0.2), 0 2px 6px rgba(107, 78, 48, 0.1);
+}
+
+/* ---------- Header content ---------- */
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+.app-logo {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background-image: linear-gradient(135deg, var(--green), var(--green-mid));
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(42, 125, 79, 0.28);
+}
+.app-logo .material-symbols-outlined { font-size: 22px; }
+
+.app-titles { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.app-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.app-title span { color: var(--brown); }
+
+.app-crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.app-crumbs .material-symbols-outlined { font-size: 14px; color: var(--outline); }
+.app-crumbs .crumb-current { color: var(--green); font-weight: 600; }
+.app-crumbs .crumb-parent { overflow: hidden; text-overflow: ellipsis; }
+
+.app-actions { flex: none; display: flex; align-items: center; gap: var(--space-2); }
+.app-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--green);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px var(--green-tint), 0 0 0 4px var(--green-line);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+}
+.app-avatar:hover { transform: scale(1.06); box-shadow: 0 0 0 3px var(--green-tint), 0 0 0 4px var(--green); }
+.app-avatar:active { transform: scale(0.95); }
+.app-avatar .material-symbols-outlined { font-size: 22px; }
+
+/* Hide the parent crumb on very narrow screens */
+@media (max-width: 380px) {
+  .app-crumbs .crumb-parent,
+  .app-crumbs .crumb-sep { display: none; }
+}
+
+/* =========================================================
+   MOTION
+   ========================================================= */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(12px, -16px, 0) scale(1.06); }
+}
+@keyframes shift {
+  to { background-position: 300% 0; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes bounce-pop {
+  0%   { transform: scale(0.8); }
+  50%  { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+@keyframes sheen {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(220%); }
+}
+@keyframes ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+@keyframes chip-in {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Page-load entrance (staggered with --i) */
+.reveal {
+  opacity: 0;
+  animation: rise 0.7s var(--ease) forwards;
+  animation-delay: calc(var(--i, 0) * 110ms);
+}
+
+/* Items rendered after an analysis (staggered with --i).
+   "backwards" (not "both") so the final transform is released after the
+   animation ends and :hover transforms on .gap-item, .match-badge and
+   .role-card still work. */
+.item-in {
+  animation: rise 0.5s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+/* Scroll reveal for result sections */
+.sr {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.6s ease, transform 0.6s var(--ease);
+}
+.sr.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Floating background glows */
+.float-slow { animation: float 9s ease-in-out infinite; }
+.float-slower { animation: float 13s ease-in-out infinite reverse; }
+
+/* Hero headline: green to brown gradient that slowly drifts */
+.headline-gradient {
+  background-image: linear-gradient(90deg, var(--green), var(--olive), var(--brown), var(--olive), var(--green));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shift 9s linear infinite;
+}
+
+/* Spinner (loading button icon) */
+.spin { animation: spin 0.9s linear infinite; }
+
+/* =========================================================
+   BUTTON EFFECTS
+   ========================================================= */
+.btn {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: var(--space-3) var(--space-5);
+  border: 0;
+  border-radius: var(--radius-md);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition:
+    transform 0.2s var(--ease),
+    box-shadow 0.25s ease,
+    filter 0.25s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+  will-change: transform;
+}
+.btn:hover:not(:disabled) { transform: translateY(-2px); }
+.btn:active:not(:disabled) { transform: translateY(0) scale(0.97); }
+.btn:disabled { cursor: progress; opacity: 0.85; }
+
+.btn .btn-icon { transition: transform 0.25s var(--ease); }
+.btn:hover:not(:disabled) .btn-icon { transform: translateX(4px); }
+
+.btn-primary {
+  background-image: linear-gradient(135deg, var(--green), var(--green-mid));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(42, 125, 79, 0.3);
+}
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 10px 26px rgba(42, 125, 79, 0.4);
+  filter: saturate(1.12);
+}
+
+.btn-brown {
+  background-image: linear-gradient(135deg, var(--brown), var(--brown-light));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(139, 90, 43, 0.3);
+}
+.btn-brown:hover:not(:disabled) {
+  box-shadow: 0 10px 26px rgba(139, 90, 43, 0.4);
+  filter: saturate(1.1);
+}
+
+/* Light sweep that crosses the button on hover */
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  background: linear-gradient(110deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.btn-shine:hover:not(:disabled)::after { animation: sheen 0.8s ease; }
+
+/* Click ripple (spans are created in script.js) */
+.ripple { position: relative; overflow: hidden; }
+.ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(0);
+  animation: ripple 0.6s ease-out forwards;
+  pointer-events: none;
+}
+.ripple-dark .ripple-wave { background: rgba(42, 125, 79, 0.22); }
+
+/* Small round icon buttons (44px minimum touch target) */
+.btn-icon-round {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-pill);
+  transition: transform 0.2s var(--ease), background-color 0.2s, color 0.2s;
+}
+.btn-icon-round:hover { transform: scale(1.1) rotate(8deg); background-color: var(--green-tint); color: var(--green); }
+.btn-icon-round:active { transform: scale(0.92); }
+
+/* =========================================================
+   FORM FIELDS
+   ========================================================= */
+.field {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field::placeholder { color: var(--outline); }
+.field:hover { border-color: var(--outline); }
+.field:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(42, 125, 79, 0.16);
+}
+select.field option { background: var(--white); color: var(--ink); }
+
+.field-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* =========================================================
+   SKILL CHIPS + SUGGESTIONS
+   ========================================================= */
+.chip-list,
+.quick-add-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--green-tint);
+  border: 1px solid var(--green-line);
+  color: var(--green-ink);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+}
+.chip:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(42, 125, 79, 0.18); }
+.chip-enter { animation: chip-in 0.35s var(--ease); }
+.chip .remove-chip-btn {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  color: var(--brown);
+  transition: transform 0.25s var(--ease), background-color 0.2s, color 0.2s;
+}
+.chip .remove-chip-btn:hover { transform: rotate(90deg); background: var(--rust-tint); color: var(--rust); }
+
+.quick-add-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.quick-add-btn:hover {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(42, 125, 79, 0.28);
+}
+.quick-add-btn:active { transform: scale(0.94); }
+
+
+/* =========================================================
+   SKILL AUTOCOMPLETE DROPDOWN  (#skillSuggestions)
+   ========================================================= */
+#skillSuggestions {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-1) 0;
+  background: var(--white);
+  border: 1px solid var(--green-line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-float);
+  animation: chip-in 0.18s var(--ease);
+  transform-origin: top center;
+}
+#skillSuggestions.hidden { display: none; }
+
+#skillSuggestions li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  min-height: 2.5rem;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+#skillSuggestions li:hover,
+#skillSuggestions li.is-active {
+  background: var(--green-tint);
+  color: var(--green-ink);
+}
+#skillSuggestions li.is-active {
+  box-shadow: inset 3px 0 0 var(--green);
+}
+
+/* The part of the skill that matches what you typed */
+#skillSuggestions li strong {
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* Message row, e.g. "No matching skills" */
+#skillSuggestions li.suggestion-empty {
+  cursor: default;
+  color: var(--outline);
+  font-size: 13px;
+}
+#skillSuggestions li.suggestion-empty:hover {
+  background: transparent;
+  color: var(--outline);
+}
+/* =========================================================
+   RESULTS
+   ========================================================= */
+.card-hover { transition: transform 0.25s var(--ease), box-shadow 0.25s ease, border-color 0.25s; }
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(107, 78, 48, 0.14);
+  border-color: var(--green-line);
+}
+
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--green-tint);
+  border: 1px solid var(--green-line);
+  color: var(--green-ink);
+  font-size: 12px;
+  line-height: 16px;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+}
+.match-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(42, 125, 79, 0.18); }
+
+.gap-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--rust-tint);
+  border: 1px solid var(--rust-line);
+  color: var(--ink);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+}
+.gap-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(179, 64, 42, 0.14); }
+
+.role-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  border: 1px solid var(--line);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s ease, border-color 0.25s;
+}
+.role-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--green);
+  box-shadow: 0 10px 24px rgba(42, 125, 79, 0.16);
+}
+.role-card:active { transform: scale(0.98); }
+.role-card .material-symbols-outlined { color: var(--brown); }
+.role-card:hover .material-symbols-outlined { transform: translateX(5px); color: var(--green); }
+
+/* Progress bar with a moving sheen */
+.bar-fill {
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(90deg, var(--green), var(--green-light));
+}
+.bar-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  background: linear-gradient(110deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: sheen 2.2s ease-in-out infinite;
+}
+
+/* =========================================================
+   FLOATING BOTTOM NAV  (.app-nav)
+   Works for 3 to 5 items, so the extra page just adds one more
+   .nav-link.
+   ========================================================= */
+.app-nav {
+  position: fixed;
+  bottom: calc(var(--safe-bottom) + var(--float-gap));
+  left: var(--float-gap);
+  right: var(--float-gap);
+  z-index: 50;
+  height: var(--nav-h);
+  max-width: calc(var(--content-max) - var(--space-2));
+  margin-inline: auto;
+  padding-inline: var(--space-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--space-1);
+  background-color: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid rgba(220, 205, 172, 0.7);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+}
+
+.nav-link {
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: 3.5rem;
+  min-height: 2.75rem;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--ink-soft);
+  transition: color 0.2s, background-color 0.2s, transform 0.2s var(--ease);
+}
+/* Active indicator sits inside the floating bar */
+.nav-link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: var(--green);
+  transition: width 0.3s var(--ease), left 0.3s var(--ease);
+}
+.nav-link:hover { color: var(--green); transform: translateY(-2px); }
+.nav-link:active { transform: scale(0.92); }
+.nav-link.is-active { color: var(--green); font-weight: 600; background-color: var(--green-tint); }
+.nav-link.is-active::before { width: 28px; left: calc(50% - 14px); }
+.nav-link.is-active .material-symbols-outlined {
+  font-variation-settings: "FILL" 1, "wght" 500;
+  animation: bounce-pop 0.45s var(--ease);
+}
+
+/* =========================================================
+   RESUME UPLOAD  (.resume-drop)
+   JS toggles .is-dragover on dragenter / dragover / dragleave / drop
+   ========================================================= */
+.resume-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+  background-color: rgba(230, 245, 235, 0.45);
+  border: 2px dashed var(--green-line);
+  border-radius: var(--radius-md);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.25s var(--ease);
+}
+.resume-drop:hover { border-color: var(--green-mid); }
+
+.resume-drop.is-dragover {
+  border-style: solid;
+  border-color: var(--green);
+  background-color: var(--green-tint);
+  box-shadow: 0 0 0 4px rgba(42, 125, 79, 0.16);
+  transform: scale(1.01);
+}
+/* Stops dragleave from firing when the cursor crosses the button or text */
+.resume-drop.is-dragover > * { pointer-events: none; }
+
+@media (min-width: 640px) {
+  .resume-drop {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-4);
+    text-align: left;
+  }
+}
+
+/* =========================================================
+   ROLE SEARCH  (.role-search)
+   ========================================================= */
+.role-search { position: relative; }
+
+.role-search-icon {
+  position: absolute;
+  top: 50%;
+  left: var(--space-4);
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--outline);
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+.role-search:focus-within .role-search-icon { color: var(--green); }
+
+/* Doubled selector so the padding beats .field regardless of order */
+.field.role-search-input {
+  padding-left: 2.75rem;
+  padding-right: 2.75rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* Hide the browser's own clear button, we have our own */
+.role-search-input::-webkit-search-cancel-button,
+.role-search-input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
+
+.role-search-clear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s var(--ease);
+}
+.role-search-clear.hidden { display: none; }   /* wins over display:flex */
+.role-search-clear:hover { color: var(--rust); background-color: var(--rust-tint); }
+.role-search-clear:active { transform: scale(0.9); }
+
+/* Filtered-out roles: .role-card sets display:flex, which would
+   otherwise override the [hidden] attribute or .hidden class */
+.role-card[hidden],
+.role-card.hidden { display: none; }
+
+/* =========================================================
+   ROLE DETAIL  (#roleDetail)
+   ========================================================= */
+.role-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2.75rem;
+  margin-left: calc(var(--space-2) * -1);   /* aligns the arrow with the text edge */
+  padding: 0 var(--space-3) 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s var(--ease);
+}
+.role-back:hover { color: var(--green); background-color: var(--green-tint); }
+.role-back:active { transform: scale(0.96); }
+.role-back:hover .material-symbols-outlined { transform: translateX(-4px); }
+
+/* .page-title / .page-subtitle are only styled inside .page-header,
+   but the detail view uses them outside it */
+#roleDetail .page-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+#roleDetail .page-subtitle {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  max-width: 34rem;
+}
+#roleDetailTitle:focus { outline: none; }   /* focused by script on open */
+
+/* =========================================================
+   LARGER SCREENS
+   ========================================================= */
+@media (min-width: 640px) {
+  :root {
+    --page-gutter: var(--space-5);
+    --float-gap: var(--space-4);
+  }
+  .page-header .page-title { font-size: 2rem; }
+  #roleDetail .page-title { font-size: 2rem; }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

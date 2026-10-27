@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fbf6ec" />
+  <title>SkillGap AI – Analyze</title>
+  <link rel="icon" href="data:," />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind (CDN is fine for prototypes; use the CLI/PostCSS build for production) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{{ url_for('static', filename='js/tailwind-config.js') }}"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body class="text-on-surface font-body-md text-body-md min-h-screen antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+  <!-- ============ FLOATING HEADER ============ -->
+  <header class="app-header">
+    <a class="app-brand" href="#" data-page="analyze">
+      <span class="app-logo" aria-hidden="true">
+        <span class="material-symbols-outlined">monitoring</span>
+      </span>
+      <span class="app-titles">
+        <span class="app-title">SkillGap <span>Analyzer</span></span>
+        <nav class="app-crumbs" aria-label="Breadcrumb">
+          <span class="crumb-parent">Career Intelligence &amp; Diagnostics</span>
+          <span class="material-symbols-outlined crumb-sep" aria-hidden="true">chevron_right</span>
+          <span class="crumb-current" id="crumbCurrent" aria-current="page">Analyze</span>
+        </nav>
+      </span>
+    </a>
+
+    <div class="app-actions">
+      <button type="button" class="app-avatar" aria-label="Account">
+        <span class="material-symbols-outlined" aria-hidden="true">person</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ MAIN ============ -->
+  <main class="app-main">
+
+    <!-- ========== PAGE 1: ANALYZE ========== -->
+    <div id="page-analyze" class="page is-active">
+      <div class="stack-lg">
+
+        <!-- HERO -->
+        <div class="relative w-full overflow-hidden">
+          <div class="float-slow absolute -top-12 -right-8 w-44 h-44 rounded-full bg-primary-container/60 blur-3xl pointer-events-none"></div>
+          <div class="float-slower absolute top-24 -left-10 w-48 h-48 rounded-full bg-secondary-container/70 blur-3xl pointer-events-none"></div>
+          <div class="relative stack-sm">
+            <h1 class="reveal font-headline-xl-mobile text-headline-xl-mobile tracking-tight" style="--i:0">
+              Discover Your <span class="headline-gradient">Skill Gap</span>
+            </h1>
+            <p class="reveal font-body-md text-body-md text-on-surface-variant max-w-[340px] leading-relaxed" style="--i:1">
+              Add your skills or upload your resume, pick a target role, and see exactly what you still need to learn.
+            </p>
+          </div>
+        </div>
+
+        <!-- INPUT FORM -->
+        <section class="reveal card relative overflow-hidden shadow-[0_8px_28px_rgba(107,78,48,0.10)]" style="--i:2" aria-labelledby="analyzeHeading">
+          <div class="stack">
+
+            <div class="flex items-center justify-between">
+              <h2 id="analyzeHeading" class="font-headline-sm text-headline-sm text-on-surface">Analyze Your Skills</h2>
+              <button type="button" id="helpTooltipBtn" aria-label="How this works" aria-expanded="false" aria-controls="helpBox"
+                class="btn-icon-round bg-surface-container-high text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px]" aria-hidden="true">help_outline</span>
+              </button>
+            </div>
+
+            <div id="helpBox" class="hidden rounded-lg bg-primary-fixed/60 border border-primary-fixed-dim/50 p-space-sm text-on-primary-container font-body-sm text-body-sm">
+              Upload a resume (PDF, DOCX or TXT) to detect your skills automatically, or type a skill and press Enter. Then choose a role and press Analyze.
+            </div>
+
+            <!-- Resume upload (NEW) -->
+            <div class="stack-sm">
+              <span class="font-label-md text-label-md text-on-surface-variant">Resume</span>
+
+              <div class="resume-drop" id="resumeDrop">
+                <input id="resumeInput" type="file" class="sr-only" tabindex="-1"
+                       accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" />
+                <button type="button" id="resumeBtn" class="btn btn-brown ripple font-label-md text-label-md" aria-describedby="resumeHint">
+                  <span class="material-symbols-outlined text-[18px]" aria-hidden="true">upload_file</span>
+                  <span id="resumeBtnLabel">Upload resume</span>
+                </button>
+                <p id="resumeHint" class="font-label-sm text-label-sm text-outline">PDF, DOCX or TXT &middot; max 5 MB</p>
+              </div>
+
+              <!-- Status line: "Reading resume...", "Found 8 skills", or an error -->
+              <p id="resumeStatus" role="status" aria-live="polite" class="hidden font-body-sm text-body-sm"></p>
+            </div>
+
+            <!-- Skills -->
+            <div class="stack-sm">
+              <div class="flex items-center justify-between">
+                <label for="skillInput" class="font-label-md text-label-md text-on-surface-variant">Your current skills</label>
+                <span class="font-label-sm text-label-sm text-primary"><span id="skillCount">0</span> added</span>
+              </div>
+
+              <div class="flex gap-2">
+                <div class="relative flex-1">
+                  <input id="skillInput" type="text" autocomplete="off" placeholder="e.g. Python, SQL"
+                         class="field w-full"
+                         role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="skillSuggestions" />
+                  <ul id="skillSuggestions" role="listbox"
+                      class="hidden absolute left-0 right-0 top-full z-50 mt-1 max-h-56 overflow-y-auto rounded-lg border border-outline-variant/60 bg-surface-container-lowest py-1 shadow-[0_8px_24px_rgba(107,78,48,0.18)]"></ul>
+                </div>
+                <button type="button" id="addSkillBtn" class="btn btn-primary ripple font-label-md text-label-md">Add</button>
+              </div>
+
+              <div id="skillsTray" role="list" aria-label="Your skills"
+                class="chip-list p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/60 min-h-[64px] items-center"></div>
+              <p id="skillsEmpty" class="font-body-sm text-body-sm text-outline">No skills added yet.</p>
+
+              <div class="stack-sm pt-1">
+                <span class="font-label-sm text-label-sm text-outline">Suggestions</span>
+                <div class="quick-add-list" id="quickAddGroup"></div>
+              </div>
+            </div>
+
+            <!-- Target role (populated by Flask) -->
+            <div class="stack-sm">
+              <label for="roleSelect" class="font-label-md text-label-md text-on-surface-variant">Target job role</label>
+              <div class="relative">
+                <select id="roleSelect" class="field w-full appearance-none pr-10 cursor-pointer">
+                  <option value="" disabled selected>Select a target role</option>
+                  {% for role in roles %}
+                  <option value="{{ role }}">{{ role }}</option>
+                  {% endfor %}
+                </select>
+                <span class="material-symbols-outlined text-secondary text-[20px] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">expand_more</span>
+              </div>
+            </div>
+
+            <!-- Error -->
+            <div id="errorBox" role="alert" class="hidden rounded-lg bg-error-container text-on-error-container px-4 py-3 font-body-sm text-body-sm"></div>
+
+            <!-- CTA -->
+            <div class="stack-sm pt-2">
+              <button type="button" id="analyzeCta"
+                class="btn btn-primary btn-shine ripple w-full h-12 rounded-xl font-label-lg text-label-lg tracking-wide">
+                <span id="analyzeLabel">Analyze skill gap</span>
+                <span id="analyzeIcon" class="btn-icon material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
+              </button>
+              <p class="text-center text-outline font-label-sm text-label-sm">Compared against {{ roles|length }} job roles</p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- RESULTS (hidden until the first analysis) -->
+        <section id="results" class="hidden stack-lg" aria-labelledby="resultsHeading" aria-live="polite">
+
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2 id="resultsHeading" class="font-headline-md text-headline-md text-on-surface">Diagnostic results</h2>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Target role: <span id="resRole" class="text-on-surface font-semibold"></span></p>
+            </div>
+            <div id="resBadge" class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-semibold"></div>
+          </div>
+
+          <!-- Match ring -->
+          <div class="card bg-gradient-to-br from-primary-fixed via-surface-container-lowest to-secondary-fixed flex items-center justify-between gap-4 shadow-[0_8px_24px_rgba(107,78,48,0.10)] relative overflow-hidden">
+            <div class="stack-sm max-w-[190px]">
+              <div id="resHeadline" class="font-headline-lg text-headline-lg text-on-surface leading-tight"></div>
+              <p id="resMessage" class="font-body-sm text-body-sm text-on-surface-variant"></p>
+            </div>
+            <div class="relative w-24 h-24 shrink-0 flex items-center justify-center" role="img" id="ringWrap">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 96 96" aria-hidden="true">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#2a7d4f" />
+                    <stop offset="1" stop-color="#8bbf5a" />
+                  </linearGradient>
+                </defs>
+                <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(139,90,43,0.14)" stroke-width="8"></circle>
+                <circle id="matchRing" cx="48" cy="48" r="40" fill="none" stroke="url(#ringGrad)" stroke-width="8" stroke-linecap="round"
+                  stroke-dasharray="251.33" stroke-dashoffset="251.33" class="transition-all duration-1000 ease-out"></circle>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="ringPercent" class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">0%</span>
+                <span class="font-label-sm text-label-sm text-outline uppercase -mt-1">Match</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="grid grid-cols-3 gap-3">
+            <div class="card card-compact card-hover stack-sm">
+              <span class="font-label-sm text-label-sm text-outline uppercase">Matched</span>
+              <span id="statMatched" class="block font-headline-lg text-headline-lg text-tertiary font-bold">0</span>
+            </div>
+            <div class="card card-compact card-hover stack-sm">
+              <span class="font-label-sm text-label-sm text-outline uppercase">Gaps</span>
+              <span id="statGap" class="block font-headline-lg text-headline-lg text-error font-bold">0</span>
+            </div>
+            <div class="card card-compact card-hover stack-sm">
+              <span class="font-label-sm text-label-sm text-outline uppercase">Required</span>
+              <span id="statRequired" class="block font-headline-lg text-headline-lg text-secondary font-bold">0</span>
+            </div>
+          </div>
+
+          <!-- Matched -->
+          <div class="card stack shadow-[0_4px_16px_rgba(107,78,48,0.08)]">
+            <div class="flex items-center justify-between">
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">Matched skills</h3>
+              <span id="matchedLabel" class="font-label-md text-label-md text-tertiary font-semibold"></span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+              <div id="matchBar" class="bar-fill h-full rounded-full transition-all duration-1000 ease-out" style="width:0%"></div>
+            </div>
+            <div id="matchedList" class="chip-list"></div>
+          </div>
+
+          <!-- Gaps -->
+          <div class="card stack shadow-[0_4px_16px_rgba(107,78,48,0.08)]">
+            <div class="flex items-center justify-between">
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">Skills to learn</h3>
+              <span id="gapLabel" class="font-label-md text-label-md text-error font-semibold"></span>
+            </div>
+            <div id="gapList" class="flex flex-col gap-2"></div>
+          </div>
+
+          <!-- Alternative roles -->
+          <div class="stack">
+            <h2 class="font-headline-md text-headline-md text-on-surface">Other roles that fit your skills</h2>
+            <div id="altList" class="flex flex-col gap-3"></div>
+          </div>
+
+          <!-- Learning plan -->
+          <div class="card bg-gradient-to-br from-primary-fixed via-surface-container-low to-secondary-fixed shadow-[0_10px_28px_rgba(107,78,48,0.12)]">
+            <div class="stack">
+              <div class="stack-sm">
+                <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Your learning checklist</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Turn your gaps into a step-by-step checklist.</p>
+              </div>
+              <button type="button" id="generateSprintBtn"
+                class="btn btn-brown btn-shine ripple w-full h-12 rounded-xl font-label-lg text-label-lg">
+                <span class="material-symbols-outlined text-[18px]" aria-hidden="true">auto_stories</span>
+                <span>Build checklist</span>
+              </button>
+              <ol id="sprintOutput" class="hidden flex flex-col gap-2"></ol>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ========== PAGE 2: ROLES ========== -->
+    <div id="page-roles" class="page">
+
+      <!-- ---- Browse view: search + role list ---- -->
+      <div id="rolesBrowse">
+        <div class="page-header">
+          <h1 class="page-title">Explore roles</h1>
+          <p class="page-subtitle">Search the {{ roles|length }} job roles we compare against. Choose one to see the skills you need to learn.</p>
+        </div>
+
+        <!-- Search (NEW) -->
+        <div class="role-search" role="search">
+          <label for="roleSearch" class="sr-only">Search job roles</label>
+          <span class="material-symbols-outlined role-search-icon" aria-hidden="true">search</span>
+          <input id="roleSearch" type="search" class="field w-full role-search-input"
+                 placeholder="Search roles, e.g. Python or Frontend" autocomplete="off"
+                 aria-controls="rolesList" />
+          <button type="button" id="roleSearchClear" class="role-search-clear hidden" aria-label="Clear search">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">close</span>
+          </button>
+        </div>
+
+        <p id="roleCount" class="font-label-sm text-label-sm text-outline mt-2" role="status" aria-live="polite"></p>
+
+        <div class="stack-sm mt-3" id="rolesList">
+          {% for role in roles %}
+          <button type="button" class="role-card" data-role="{{ role }}">
+            <span class="font-label-lg text-label-lg text-on-surface">{{ role }}</span>
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </button>
+          {% endfor %}
+        </div>
+
+        <!-- Shown when the search matches nothing -->
+        <div id="rolesEmpty" class="hidden card text-center stack-sm mt-3">
+          <span class="material-symbols-outlined text-[32px] text-outline mx-auto" aria-hidden="true">search_off</span>
+          <p class="font-body-md text-body-md text-on-surface">No roles found</p>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Try a different word, or clear the search to see every role.</p>
+        </div>
+      </div>
+
+      <!-- ---- Detail view: skills for one role (NEW) ---- -->
+      <div id="roleDetail" class="hidden stack-lg" aria-labelledby="roleDetailTitle">
+
+        <div class="stack-sm">
+          <button type="button" id="roleBack" class="role-back">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
+            <span class="font-label-md text-label-md">All roles</span>
+          </button>
+          <h1 id="roleDetailTitle" class="page-title" tabindex="-1"></h1>
+          <p id="roleDetailSummary" class="page-subtitle"></p>
+        </div>
+
+        <!-- Skills you already have (only shown when the user has added skills) -->
+        <div id="roleHaveCard" class="hidden card stack shadow-[0_4px_16px_rgba(107,78,48,0.08)]">
+          <div class="flex items-center justify-between">
+            <h2 class="font-headline-sm text-headline-sm text-on-surface">You already have</h2>
+            <span id="roleHaveCount" class="font-label-md text-label-md text-tertiary font-semibold"></span>
+          </div>
+          <div id="roleHaveList" class="chip-list"></div>
+        </div>
+
+        <!-- Skills to learn -->
+        <div class="card stack shadow-[0_4px_16px_rgba(107,78,48,0.08)]">
+          <div class="flex items-center justify-between">
+            <h2 id="roleNeedHeading" class="font-headline-sm text-headline-sm text-on-surface">Skills to learn</h2>
+            <span id="roleNeedCount" class="font-label-md text-label-md text-error font-semibold"></span>
+          </div>
+          <div id="roleNeedList" class="flex flex-col gap-2"></div>
+          <p id="roleDetailError" role="alert" class="hidden font-body-sm text-body-sm text-error"></p>
+        </div>
+
+        <button type="button" id="roleUseBtn"
+          class="btn btn-primary btn-shine ripple w-full h-12 rounded-xl font-label-lg text-label-lg">
+          <span>Use as target role</span>
+          <span class="btn-icon material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ============ FLOATING BOTTOM NAV ============ -->
+  <nav id="bottomNav" aria-label="Primary" class="app-nav">
+    <a href="#" data-path="analyze" data-page="analyze" aria-current="page" class="nav-link is-active">
+      <span class="material-symbols-outlined text-[22px]" aria-hidden="true">adjust</span><span class="font-label-sm text-label-sm">Analyze</span>
+    </a>
+    <a href="#" data-path="radar-roles" data-page="roles" class="nav-link">
+      <span class="material-symbols-outlined text-[22px]" aria-hidden="true">explore</span><span class="font-label-sm text-label-sm">Roles</span>
+    </a>
+    <a href="#" data-path="learning-path" class="nav-link">
+      <span class="material-symbols-outlined text-[22px]" aria-hidden="true">auto_stories</span><span class="font-label-sm text-label-sm">Learning</span>
+    </a>
+    <a href="#" data-path="profile" class="nav-link">
+      <span class="material-symbols-outlined text-[22px]" aria-hidden="true">account_circle</span><span class="font-label-sm text-label-sm">Profile</span>
+    </a>
+  </nav>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+
+  <!-- Page switching (Analyze <-> Roles).
+       Role clicks, search and the detail panel are handled in script.js. -->
+  <script>
+    (function () {
+      var titles = { analyze: "Analyze", roles: "Roles" };
+      var pages = document.querySelectorAll(".page");
+      var navLinks = document.querySelectorAll("#bottomNav .nav-link");
+      var crumb = document.getElementById("crumbCurrent");
+
+      function showPage(name) {
+        pages.forEach(function (p) { p.classList.toggle("is-active", p.id === "page-" + name); });
+        navLinks.forEach(function (l) {
+          var on = l.getAttribute("data-page") === name;
+          l.classList.toggle("is-active", on);
+          if (on) l.setAttribute("aria-current", "page"); else l.removeAttribute("aria-current");
+        });
+        if (crumb) crumb.textContent = titles[name] || "Analyze";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Exposed so script.js can switch pages (e.g. "Use as target role")
+      window.showPage = showPage;
+
+      document.querySelectorAll("[data-page]").forEach(function (el) {
+        el.addEventListener("click", function (e) {
+          e.preventDefault();
+          showPage(el.getAttribute("data-page"));
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
